@@ -1,23 +1,28 @@
 class MusicController {
   Music m[];
-  AudioPlayer in;
+  int current_music = 0;
+ 
 
   boolean activated = false;
 
   void init(Minim minim) {
     activated = true;
-    m = new Music[1]; // array init
+    m = new Music[3]; // array init
     for(int i = 0; i < m.length; i++) {
       m[i] = new Music();
-      m[i].init(i);
+      m[i].init(i, minim);
+      
     } 
-    in = minim.loadFile("music0.mp3");
-    in.play(0);
+    m[current_music].play();
+    
   }
   
   void draw() {
-      fill(255,255,255,255);
-      rect(10,20,30,40);  
+      for(int i=0; i < m.length; i++) {
+        if (current_music == i) {
+        m[i].draw();
+        }
+      } 
   }
   
   void mousePressed() {
