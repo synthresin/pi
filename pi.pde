@@ -12,6 +12,8 @@ boolean mIntro;
 IntroController intro = new IntroController();
 //music controller
 MusicController musics = new MusicController();
+Minim minim;
+//AudioPlayer in;
 
 void setup() {
   
@@ -25,7 +27,10 @@ void setup() {
   mIntro = true;
   intro.setup();
   
-
+  minim = new Minim(this);
+//  in = minim.loadFile("music0.mp3");
+//  
+//  in.play(0);
 }
 
 void draw() {

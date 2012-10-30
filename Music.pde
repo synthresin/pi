@@ -1,5 +1,12 @@
 class Music {
+  
+  AudioPlayer in;
+  
   Music() {
-    println("music init!");
+    
+  }
+  
+  void init(int musicNum) {
+    
   }
 }

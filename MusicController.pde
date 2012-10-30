@@ -1,13 +1,15 @@
 class MusicController {
   Music m[];
+  AudioPlayer in;
 
   boolean activated = false;
 
   void init() {
     activated = true;
-    m = new Music[3]; // array init
+    m = new Music[1]; // array init
     for(int i = 0; i < m.length; i++) {
       m[i] = new Music();
+      m[i].init(i);
     } 
     
   }
