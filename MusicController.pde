@@ -32,13 +32,17 @@ class MusicController {
   }
   
   void draw() {
+      // Bar
+      float BarPosX = map(m[current_music].in.position(), 0, m[current_music].in.length(),0,1024);
+      image(pBar, BarPosX, height/2, 5,875);
+    
+      // UI
       if(m[current_music].playing) {
         image(pauseBtn, 967,92,26,71);
       } else {
-        
         image(playBtn, 967,92,26,71);
       }
-      
+
       for(int i=0; i < m.length; i++) {
         if (current_music == i) {
         m[i].draw();

@@ -11,6 +11,7 @@ class Music {
   void init(int musicNum, Minim minim) {
     in = minim.loadFile("music" + musicNum +".mp3", 1024);
     fft = new FFT( in.bufferSize(), in.sampleRate() );
+    
   }
   
   void play() {
@@ -35,7 +36,8 @@ class Music {
   }
   
   void activate() {
-    this.in.play(0);
+    this.in.rewind();
+    this.in.loop();
     this.playing = true;
   }
 }
