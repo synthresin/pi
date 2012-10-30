@@ -33,7 +33,7 @@ class MusicController {
   
   void draw() {
       // Bar
-      float BarPosX = map(m[current_music].in.position(), 0, m[current_music].in.length(),118,906);
+      float BarPosX = map(m[current_music].in.position(), 0, m[current_music].in.length(),0,1024);
       image(pBar, BarPosX, height/2, 5,875);
     
       // UI
