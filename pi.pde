@@ -6,7 +6,6 @@ import ddf.minim.ugens.*;
 import ddf.minim.effects.*;
 
 PImage bg;
-boolean mIntro;
 
 //intro controller
 IntroController intro = new IntroController();
@@ -23,10 +22,13 @@ void setup() {
   imageMode(CENTER);
   
   // intro setup
-  mIntro = true;
   intro.setup();
+  musics.setup();
+  
   
   minim = new Minim(this);
+  
+  
 }
 
 void draw() {

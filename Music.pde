@@ -2,6 +2,7 @@ class Music {
   
   AudioPlayer in;
   FFT         fft;
+  boolean     playing;
   
   Music() {
     
@@ -13,11 +14,13 @@ class Music {
   }
   
   void play() {
-    in.play(0);
+    this.in.play();
+    this.playing = true;
   }
   
   void stop() {
-  
+    this.in.pause();
+    this.playing = false;
   }
   
   void draw() {
@@ -29,5 +32,10 @@ class Music {
     // draw the line for frequency band i, scaling it up a bit so we can see it
       line( i, height, i, height - fft.getBand(i)*8 );
     }
+  }
+  
+  void activate() {
+    this.in.play(0);
+    this.playing = true;
   }
 }
