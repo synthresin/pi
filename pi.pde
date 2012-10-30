@@ -16,17 +16,19 @@ Minim minim;
 void setup() {
   
   // basic app setup
+  minim = new Minim(this);
   size(1024,768);
   background(0,0,0);
   bg = loadImage("background.png");
   imageMode(CENTER);
+  ellipseMode(CENTER); 
   
   // intro setup
   intro.setup();
   musics.setup();
   
   
-  minim = new Minim(this);
+  
   
   
 }

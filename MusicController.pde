@@ -3,7 +3,6 @@ class MusicController {
   int current_music = 0;
   PImage playBtn;
   PImage pauseBtn;
-  PImage pBar;
   int musicNum = 3;
  
 
@@ -11,30 +10,37 @@ class MusicController {
   void setup() {
     playBtn = loadImage("play.png");
     pauseBtn = loadImage("pause.png");
-    pBar = loadImage("bar.png");
-  }
-  
-  void init(Minim minim) {
-    
-    
-    
-    
-    activated = true;
     
     m = new Music[musicNum]; // array init
     for(int i = 0; i < m.length; i++) {
       m[i] = new Music();
-      m[i].init(i, minim);
+      m[i].setup(i, minim);
       
     } 
+    
+    // add icons to first object
+    m[0].icons.add(new Icon(3, 520, 342));
+    m[0].icons.add(new Icon(3, 420, 142));
+    m[0].icons.add(new Icon(3, 320, 242));
+    m[0].icons.add(new Icon(3, 220, 642));
+    m[0].icons.add(new Icon(3, 120, 642));
+  }
+  
+  void init(Minim minim) {
+    
+    activated = true;
+    
+    
     m[current_music].activate();
+    //println(m[current_music].icons.size());
+    
+    
     
   }
   
   void draw() {
-      // Bar
-      float BarPosX = map(m[current_music].in.position(), 0, m[current_music].in.length(),118,906);
-      image(pBar, BarPosX, height/2, 5,875);
+      
+      
     
       // UI
       if(m[current_music].playing) {
