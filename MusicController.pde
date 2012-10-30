@@ -4,14 +4,15 @@ class MusicController {
 
   boolean activated = false;
 
-  void init() {
+  void init(Minim minim) {
     activated = true;
     m = new Music[1]; // array init
     for(int i = 0; i < m.length; i++) {
       m[i] = new Music();
       m[i].init(i);
     } 
-    
+    in = minim.loadFile("music0.mp3");
+    in.play(0);
   }
   
   void draw() {

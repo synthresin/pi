@@ -13,7 +13,6 @@ IntroController intro = new IntroController();
 //music controller
 MusicController musics = new MusicController();
 Minim minim;
-//AudioPlayer in;
 
 void setup() {
   
@@ -28,9 +27,6 @@ void setup() {
   intro.setup();
   
   minim = new Minim(this);
-//  in = minim.loadFile("music0.mp3");
-//  
-//  in.play(0);
 }
 
 void draw() {
@@ -49,7 +45,7 @@ void mousePressed() {
   // global action
   if(intro.activated && mouseX > 607 && mouseX < 670 && mouseY > 293 && mouseY < 320) {
     intro.deactivate();
-    musics.init();
+    musics.init(minim);
   }
   // intro mouse action
   if(intro.activated) intro.mousePressed();
