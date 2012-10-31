@@ -4,7 +4,7 @@ class MusicController {
   PImage playBtn;
   PImage pauseBtn;
   int musicNum = 3;
- 
+  
 
   boolean activated = false;
   void setup() {
@@ -14,8 +14,7 @@ class MusicController {
     m = new Music[musicNum]; // array init
     for(int i = 0; i < m.length; i++) {
       m[i] = new Music();
-      m[i].setup(i, minim);
-      
+      m[i].setup(i, minim);  
     } 
     
     // add icons to first object
@@ -40,37 +39,42 @@ class MusicController {
     m[0].icons.add(new Icon(1, 816, 247, 816, 247, "0"));
     m[0].icons.add(new Icon(7, 859, 615, 859, 615, "0"));
     m[0].icons.add(new Icon(6, 902, 155, 902, 155, "0"));
+   
     
   }
+  
+  
   
   void init(Minim minim) {
     
     activated = true;
     
-    
     m[current_music].activate();
+    
+    
     //println(m[current_music].icons.size());
     
     
     
   }
   
+  
+  
   void draw() {
       
+    //draw each music
+    for(int i=0; i < m.length; i++) {
+        if (current_music == i) {
+        m[i].draw();
+        }
+      } 
       
-    
       // UI
       if(m[current_music].playing) {
         image(pauseBtn, 967,92,26,71);
       } else {
         image(playBtn, 967,92,26,71);
       }
-
-      for(int i=0; i < m.length; i++) {
-        if (current_music == i) {
-        m[i].draw();
-        }
-      } 
   }
   
   void togglePlay() {

@@ -1,3 +1,4 @@
+import megamu.mesh.*;
 import ddf.minim.spi.*;
 import ddf.minim.signals.*;
 import ddf.minim.*;

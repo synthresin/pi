@@ -1,12 +1,9 @@
 class ParticleController {
-  
   int posX;
   int posY;
   String type;
   ArrayList   particles;
   int numParticle;
-  int mMouseX;
-  int mMouseY;
   
   ParticleController(int _posX, int _posY, String _type, int _numParticle) {
     posX = _posX;
@@ -18,18 +15,15 @@ class ParticleController {
     //add particles
     for(int i = 0; i < numParticle;i ++) {
       particles.add(new Particle((int)random(-30, 30),(int)random(-30,30) ));
-    } 
+    }
+    
   }
   
   void update(float freq) {
     // modun particle update
-    
-    mMouseX = mouseX - posX;
-    mMouseY = mouseY - posY;
-    
     for (int i = particles.size(); i > 0; i--) { 
       Particle p = (Particle) particles.get(i-1);
-      p.update(freq, mMouseX, mMouseY);
+      p.update(freq);
     }
   }
   
@@ -68,7 +62,6 @@ class ParticleController {
     }  else if (type == "red") {
       fill(205,58,50);
     }
-    
     
     for (int i = particles.size(); i > 0; i--) { 
       Particle p = (Particle) particles.get(i-1);

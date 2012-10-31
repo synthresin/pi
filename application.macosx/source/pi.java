@@ -2,6 +2,7 @@ import processing.core.*;
 import processing.data.*; 
 import processing.opengl.*; 
 
+import megamu.mesh.*; 
 import ddf.minim.spi.*; 
 import ddf.minim.signals.*; 
 import ddf.minim.*; 
@@ -24,6 +25,7 @@ import java.util.zip.*;
 import java.util.regex.*; 
 
 public class pi extends PApplet {
+
 
 
 
@@ -180,6 +182,7 @@ class Music {
   ArrayList   icons;
   PImage pBar;
   float barPosX;
+  ParticleController pController[];
   
   Music() {
     
@@ -190,6 +193,11 @@ class Music {
     fft = new FFT( in.bufferSize(), in.sampleRate() );
     icons = new ArrayList();
     pBar = loadImage("bar.png");
+    
+    pController = new ParticleController[3]; 
+    pController[0] = new ParticleController(206, 383, "white",50);
+    pController[1] = new ParticleController(512, 383, "gray",50);
+    pController[2] = new ParticleController(816, 383, "red",50);
   }
   
   public void play() {
@@ -203,17 +211,25 @@ class Music {
   }
   
   public void draw() {
+      fft.forward( in.mix );
+      //Particle Controller
+      float low = fft.calcAvg(60, 300);
+      float mid = fft.calcAvg(300, 2000);
+      float high = fft.calcAvg(2000, 7000);
+      println("low: " + low +", mid: " + mid + ", high: " + high );
+      
+      pController[0].update(low * 2.4f);
+      pController[1].update(mid * 10);
+      pController[2].update(high * 50);
+      
+      for(int i =0; i<3 ;i++) {
+        pController[i].draw();
+      }
+    
     barPosX = map(in.position(), 0, in.length(),118,906);
     image(pBar, barPosX, height/2, 5,875);
     
-    fft.forward( in.mix );
-  
-    for(int i = 0; i < fft.specSize(); i++)
-    {
-      stroke(255);
-    // draw the line for frequency band i, scaling it up a bit so we can see it
-      line( i, height, i, height - fft.getBand(i)*8 );
-    }
+    
     for (int i = icons.size(); i > 0; i--) { 
       Icon icon = (Icon) icons.get(i-1);
       if(icon.posX < barPosX) icon.draw();
@@ -234,7 +250,7 @@ class MusicController {
   PImage playBtn;
   PImage pauseBtn;
   int musicNum = 3;
- 
+  
 
   boolean activated = false;
   public void setup() {
@@ -244,8 +260,7 @@ class MusicController {
     m = new Music[musicNum]; // array init
     for(int i = 0; i < m.length; i++) {
       m[i] = new Music();
-      m[i].setup(i, minim);
-      
+      m[i].setup(i, minim);  
     } 
     
     // add icons to first object
@@ -270,37 +285,42 @@ class MusicController {
     m[0].icons.add(new Icon(1, 816, 247, 816, 247, "0"));
     m[0].icons.add(new Icon(7, 859, 615, 859, 615, "0"));
     m[0].icons.add(new Icon(6, 902, 155, 902, 155, "0"));
+   
     
   }
+  
+  
   
   public void init(Minim minim) {
     
     activated = true;
     
-    
     m[current_music].activate();
+    
+    
     //println(m[current_music].icons.size());
     
     
     
   }
   
+  
+  
   public void draw() {
       
+    //draw each music
+    for(int i=0; i < m.length; i++) {
+        if (current_music == i) {
+        m[i].draw();
+        }
+      } 
       
-    
       // UI
       if(m[current_music].playing) {
         image(pauseBtn, 967,92,26,71);
       } else {
         image(playBtn, 967,92,26,71);
       }
-
-      for(int i=0; i < m.length; i++) {
-        if (current_music == i) {
-        m[i].draw();
-        }
-      } 
   }
   
   public void togglePlay() {
@@ -347,6 +367,100 @@ class MusicController {
   
  
 } 
+class Particle {
+  int posX;
+  int posY;
+  
+  Particle(int _posX, int _posY) {
+    posX = _posX;
+    posY = _posY;
+  }
+  public void update(float freq) {
+    posX = (int)random(-freq, freq);
+    posY = (int)random(-freq, freq);
+  }
+  public void draw() {
+    ellipse(posX, posY, 6, 6);
+  }
+
+}
+
+class ParticleController {
+  int posX;
+  int posY;
+  String type;
+  ArrayList   particles;
+  int numParticle;
+  
+  ParticleController(int _posX, int _posY, String _type, int _numParticle) {
+    posX = _posX;
+    posY = _posY;
+    particles = new ArrayList();
+    type = _type;
+    numParticle = _numParticle;
+    
+    //add particles
+    for(int i = 0; i < numParticle;i ++) {
+      particles.add(new Particle((int)random(-30, 30),(int)random(-30,30) ));
+    }
+    
+  }
+  
+  public void update(float freq) {
+    // modun particle update
+    for (int i = particles.size(); i > 0; i--) { 
+      Particle p = (Particle) particles.get(i-1);
+      p.update(freq);
+    }
+  }
+  
+  public void draw() {
+   
+    pushMatrix();
+    translate(posX, posY);
+    
+    stroke(255);
+    // make line
+    float[][] points = new float[numParticle][2];
+    
+    for(int i = 0; i < particles.size(); i++) {
+      Particle p = (Particle) particles.get(i);
+      points[i][0] = p.posX;
+      points[i][1] = p.posY;
+    }
+    
+    Delaunay myDelaunay = new Delaunay( points );
+    float[][] myEdges = myDelaunay.getEdges();
+    
+    for(int i=0; i<myEdges.length; i++)
+    {
+      float startX = myEdges[i][0];
+      float startY = myEdges[i][1];
+      float endX = myEdges[i][2];
+      float endY = myEdges[i][3];
+      line( startX, startY, endX, endY );
+    }
+    
+    noStroke();
+    if (type == "white") {
+      fill(255,255,255);
+    } else if (type == "gray") {
+      fill(147,149,152);
+    }  else if (type == "red") {
+      fill(205,58,50);
+    }
+    
+    for (int i = particles.size(); i > 0; i--) { 
+      Particle p = (Particle) particles.get(i-1);
+      p.draw();
+    } 
+    
+    
+    popMatrix();
+  }
+
+}
+
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "pi" };
     if (passedArgs != null) {
