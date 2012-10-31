@@ -7,9 +7,6 @@ class Music {
   PImage pBar;
   float barPosX;
   ParticleController pController[];
-  ArrayList lowTone;
-  ArrayList midTone;
-  ArrayList highTone;
   
   Music() {
     
@@ -22,9 +19,9 @@ class Music {
     pBar = loadImage("bar.png");
     
     pController = new ParticleController[3]; 
-    pController[0] = new ParticleController(206, 383, "white",1024);
-    pController[1] = new ParticleController(512, 383, "gray",1024);
-    pController[2] = new ParticleController(816, 383, "red",1024);
+    pController[0] = new ParticleController(206, 383, "white",50);
+    pController[1] = new ParticleController(512, 383, "gray",50);
+    pController[2] = new ParticleController(816, 383, "red",50);
   }
   
   void play() {
@@ -38,22 +35,16 @@ class Music {
   }
   
   void draw() {
-    
-      //Particle Controller
       fft.forward( in.mix );
+      //Particle Controller
+      float low = fft.calcAvg(60, 300);
+      float mid = fft.calcAvg(300, 2000);
+      float high = fft.calcAvg(2000, 7000);
+      println("low: " + low +", mid: " + mid + ", high: " + high );
       
-      int k =0;
-      for(int i = 0; i < fft.specSize(); i++)
-      {
-        Particle p = (Particle) pController[0].particles.get(k);
-        
-        p.posX = (int)fft.getBand(i)*8;
-        k++;
-        stroke(255);
-        // draw the line for frequency band i, scaling it up a bit so we can see it
-        line( i, height, i, height - fft.getBand(i)*8 );
-      }
-      
+      pController[0].update(low * 2.4);
+      pController[1].update(mid * 10);
+      pController[2].update(high * 50);
       
       for(int i =0; i<3 ;i++) {
         pController[i].draw();

@@ -19,11 +19,11 @@ class ParticleController {
     
   }
   
-  void update() {
+  void update(float freq) {
     // modun particle update
     for (int i = particles.size(); i > 0; i--) { 
       Particle p = (Particle) particles.get(i-1);
-      p.update();
+      p.update(freq);
     }
   }
   

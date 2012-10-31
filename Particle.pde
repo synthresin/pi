@@ -6,8 +6,9 @@ class Particle {
     posX = _posX;
     posY = _posY;
   }
-  void update() {
-   
+  void update(float freq) {
+    posX = (int)random(-freq, freq);
+    posY = (int)random(-freq, freq);
   }
   void draw() {
     ellipse(posX, posY, 7, 7);
