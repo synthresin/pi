@@ -7,8 +7,10 @@ class Particle {
     posY = _posY;
   }
   void update(float freq, int mx, int my) {
+    
     posX = (int)random(-freq, freq);
     posY = (int)random(-freq, freq);
+    
   }
   void draw() {
     
