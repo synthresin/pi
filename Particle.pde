@@ -2,8 +2,9 @@ class Particle {
   int posX;
   int posY;
   
-  Particle() {
-    
+  Particle(int _posX, int _posY) {
+    posX = _posX;
+    posY = _posY;
   }
   void update() {
    
