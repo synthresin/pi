@@ -3,7 +3,6 @@ class MusicController {
   int current_music = 0;
   PImage playBtn;
   PImage pauseBtn;
-  PImage pBar;
   int musicNum = 3;
  
 
@@ -11,30 +10,54 @@ class MusicController {
   void setup() {
     playBtn = loadImage("play.png");
     pauseBtn = loadImage("pause.png");
-    pBar = loadImage("bar.png");
-  }
-  
-  void init(Minim minim) {
-    
-    
-    
-    
-    activated = true;
     
     m = new Music[musicNum]; // array init
     for(int i = 0; i < m.length; i++) {
       m[i] = new Music();
-      m[i].init(i, minim);
+      m[i].setup(i, minim);
       
     } 
+    
+    // add icons to first object
+    m[0].icons.add(new Icon(1, 123, 63, 123, 63, "0"));
+    m[0].icons.add(new Icon(4, 167, 339, 167, 339, "0"));
+    m[0].icons.add(new Icon(3, 210, 63, 210, 63, "0"));
+    m[0].icons.add(new Icon(7, 210, 615, 210, 615, "0"));
+    m[0].icons.add(new Icon(7, 253, 615, 253, 615, "0"));
+    m[0].icons.add(new Icon(3, 295, 249, 295, 249, "0"));
+    
+    m[0].icons.add(new Icon(0, 338, 615, 338, 615, "0"));
+    m[0].icons.add(new Icon(6, 383, 249, 383, 249, "0"));
+    m[0].icons.add(new Icon(2, 426, 431, 426, 431, "0"));
+    m[0].icons.add(new Icon(5, 468, 7075, 468, 707, "0"));
+    m[0].icons.add(new Icon(2, 513, 155, 513, 155, "0"));
+    m[0].icons.add(new Icon(4, 555, 523, 555, 523, "0"));
+    m[0].icons.add(new Icon(7, 599, 431, 599, 431, "0"));
+    m[0].icons.add(new Icon(0, 643, 63, 643, 63, "0"));
+    m[0].icons.add(new Icon(6, 686, 155, 686, 155, "0"));
+    m[0].icons.add(new Icon(3, 729, 155, 729, 155, "0"));
+    m[0].icons.add(new Icon(1, 773, 247, 773, 247, "0"));
+    m[0].icons.add(new Icon(1, 816, 247, 816, 247, "0"));
+    m[0].icons.add(new Icon(7, 859, 615, 859, 615, "0"));
+    m[0].icons.add(new Icon(6, 902, 155, 902, 155, "0"));
+    
+  }
+  
+  void init(Minim minim) {
+    
+    activated = true;
+    
+    
     m[current_music].activate();
+    //println(m[current_music].icons.size());
+    
+    
     
   }
   
   void draw() {
-      // Bar
-      float BarPosX = map(m[current_music].in.position(), 0, m[current_music].in.length(),0,1024);
-      image(pBar, BarPosX, height/2, 5,875);
+      
+      
     
       // UI
       if(m[current_music].playing) {

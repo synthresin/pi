@@ -19,11 +19,28 @@ class MusicController {
     } 
     
     // add icons to first object
-    m[0].icons.add(new Icon(3, 520, 342));
-    m[0].icons.add(new Icon(3, 420, 142));
-    m[0].icons.add(new Icon(3, 320, 242));
-    m[0].icons.add(new Icon(3, 220, 642));
-    m[0].icons.add(new Icon(3, 120, 642));
+    m[0].icons.add(new Icon(1, 123, 63, 123, 63, "0"));
+    m[0].icons.add(new Icon(4, 167, 339, 167, 339, "0"));
+    m[0].icons.add(new Icon(3, 210, 63, 210, 63, "0"));
+    m[0].icons.add(new Icon(7, 210, 615, 210, 615, "0"));
+    m[0].icons.add(new Icon(7, 253, 615, 253, 615, "0"));
+    m[0].icons.add(new Icon(3, 295, 249, 295, 249, "0"));
+    
+    m[0].icons.add(new Icon(0, 338, 615, 338, 615, "0"));
+    m[0].icons.add(new Icon(6, 383, 249, 383, 249, "0"));
+    m[0].icons.add(new Icon(2, 426, 431, 426, 431, "0"));
+    m[0].icons.add(new Icon(5, 468, 7075, 468, 707, "0"));
+    m[0].icons.add(new Icon(2, 513, 155, 513, 155, "0"));
+    m[0].icons.add(new Icon(4, 555, 523, 555, 523, "0"));
+    m[0].icons.add(new Icon(7, 599, 431, 599, 431, "0"));
+    m[0].icons.add(new Icon(0, 643, 63, 643, 63, "0"));
+    m[0].icons.add(new Icon(6, 686, 155, 686, 155, "0"));
+    m[0].icons.add(new Icon(3, 729, 155, 729, 155, "0"));
+    m[0].icons.add(new Icon(1, 773, 247, 773, 247, "0"));
+    m[0].icons.add(new Icon(1, 816, 247, 816, 247, "0"));
+    m[0].icons.add(new Icon(7, 859, 615, 859, 615, "0"));
+    m[0].icons.add(new Icon(6, 902, 155, 902, 155, "0"));
+    
   }
   
   void init(Minim minim) {

@@ -40,7 +40,6 @@ class Music {
     // draw the line for frequency band i, scaling it up a bit so we can see it
       line( i, height, i, height - fft.getBand(i)*8 );
     }
-    println(icons.size());
     for (int i = icons.size(); i > 0; i--) { 
       Icon icon = (Icon) icons.get(i-1);
       if(icon.posX < barPosX) icon.draw();

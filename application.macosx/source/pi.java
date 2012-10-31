@@ -43,17 +43,19 @@ Minim minim;
 public void setup() {
   
   // basic app setup
+  minim = new Minim(this);
   size(1024,768);
   background(0,0,0);
   bg = loadImage("background.png");
   imageMode(CENTER);
+  ellipseMode(CENTER); 
   
   // intro setup
   intro.setup();
   musics.setup();
   
   
-  minim = new Minim(this);
+  
   
   
 }
@@ -84,6 +86,36 @@ public void mousePressed() {
 }
 
 
+class Icon {
+  PImage img;
+  PImage popup;
+  int type;
+  int posX, posY;
+  
+  Icon(int _t, int _x, int _y,int _x2, int _y2, String _popup) {
+    type = _t;
+    posX = _x;
+    posY = _y;
+    img = loadImage("icon" + _t + ".png");
+    popup = loadImage("num_popup" + _popup + ".png");
+    
+  }
+  
+  public void draw() {
+    fill(255,255,255);
+    image(img,posX,posY,img.width,img.height);
+    drawPopup();
+  }
+  
+  public void drawPopup() {
+    if(mouseX > posX - img.width/2 && mouseX < posX + img.width/2 && mouseY > posY - img.height/2 && mouseY < posY + img.height/2) {
+      image(popup,posX,posY,popup.width,popup.height);
+    }
+  }
+  
+  
+ 
+}
 class IntroController {
 
   PImage img[];
@@ -145,15 +177,19 @@ class Music {
   AudioPlayer in;
   FFT         fft;
   boolean     playing;
+  ArrayList   icons;
+  PImage pBar;
+  float barPosX;
   
   Music() {
     
   }
   
-  public void init(int musicNum, Minim minim) {
+  public void setup(int musicNum, Minim minim) {
     in = minim.loadFile("music" + musicNum +".mp3", 1024);
     fft = new FFT( in.bufferSize(), in.sampleRate() );
-    
+    icons = new ArrayList();
+    pBar = loadImage("bar.png");
   }
   
   public void play() {
@@ -167,6 +203,9 @@ class Music {
   }
   
   public void draw() {
+    barPosX = map(in.position(), 0, in.length(),118,906);
+    image(pBar, barPosX, height/2, 5,875);
+    
     fft.forward( in.mix );
   
     for(int i = 0; i < fft.specSize(); i++)
@@ -175,6 +214,12 @@ class Music {
     // draw the line for frequency band i, scaling it up a bit so we can see it
       line( i, height, i, height - fft.getBand(i)*8 );
     }
+    for (int i = icons.size(); i > 0; i--) { 
+      Icon icon = (Icon) icons.get(i-1);
+      if(icon.posX < barPosX) icon.draw();
+    }
+    
+    
   }
   
   public void activate() {
@@ -188,7 +233,6 @@ class MusicController {
   int current_music = 0;
   PImage playBtn;
   PImage pauseBtn;
-  PImage pBar;
   int musicNum = 3;
  
 
@@ -196,30 +240,54 @@ class MusicController {
   public void setup() {
     playBtn = loadImage("play.png");
     pauseBtn = loadImage("pause.png");
-    pBar = loadImage("bar.png");
-  }
-  
-  public void init(Minim minim) {
-    
-    
-    
-    
-    activated = true;
     
     m = new Music[musicNum]; // array init
     for(int i = 0; i < m.length; i++) {
       m[i] = new Music();
-      m[i].init(i, minim);
+      m[i].setup(i, minim);
       
     } 
+    
+    // add icons to first object
+    m[0].icons.add(new Icon(1, 123, 63, 123, 63, "0"));
+    m[0].icons.add(new Icon(4, 167, 339, 167, 339, "0"));
+    m[0].icons.add(new Icon(3, 210, 63, 210, 63, "0"));
+    m[0].icons.add(new Icon(7, 210, 615, 210, 615, "0"));
+    m[0].icons.add(new Icon(7, 253, 615, 253, 615, "0"));
+    m[0].icons.add(new Icon(3, 295, 249, 295, 249, "0"));
+    
+    m[0].icons.add(new Icon(0, 338, 615, 338, 615, "0"));
+    m[0].icons.add(new Icon(6, 383, 249, 383, 249, "0"));
+    m[0].icons.add(new Icon(2, 426, 431, 426, 431, "0"));
+    m[0].icons.add(new Icon(5, 468, 7075, 468, 707, "0"));
+    m[0].icons.add(new Icon(2, 513, 155, 513, 155, "0"));
+    m[0].icons.add(new Icon(4, 555, 523, 555, 523, "0"));
+    m[0].icons.add(new Icon(7, 599, 431, 599, 431, "0"));
+    m[0].icons.add(new Icon(0, 643, 63, 643, 63, "0"));
+    m[0].icons.add(new Icon(6, 686, 155, 686, 155, "0"));
+    m[0].icons.add(new Icon(3, 729, 155, 729, 155, "0"));
+    m[0].icons.add(new Icon(1, 773, 247, 773, 247, "0"));
+    m[0].icons.add(new Icon(1, 816, 247, 816, 247, "0"));
+    m[0].icons.add(new Icon(7, 859, 615, 859, 615, "0"));
+    m[0].icons.add(new Icon(6, 902, 155, 902, 155, "0"));
+    
+  }
+  
+  public void init(Minim minim) {
+    
+    activated = true;
+    
+    
     m[current_music].activate();
+    //println(m[current_music].icons.size());
+    
+    
     
   }
   
   public void draw() {
-      // Bar
-      float BarPosX = map(m[current_music].in.position(), 0, m[current_music].in.length(),0,1024);
-      image(pBar, BarPosX, height/2, 5,875);
+      
+      
     
       // UI
       if(m[current_music].playing) {
